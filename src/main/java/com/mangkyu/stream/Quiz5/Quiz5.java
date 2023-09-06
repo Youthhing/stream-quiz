@@ -1,7 +1,11 @@
 package com.mangkyu.stream.Quiz5;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Quiz5 {
 
@@ -9,22 +13,45 @@ public class Quiz5 {
 
     // 5.1 모든 문자열의 길이를 더한 결과를 출력하여라.
     public int quiz1() {
-        return 0;
+        Integer sum = Arrays.stream(STRING_ARR)
+                .map(String::length)
+                .reduce(0, (x, y) -> x + y);
+
+        return sum;
     }
 
     // 5.2 문자열 중에서 가장 긴 것의 길이를 출력하시오.
     public int quiz2() {
-        return 0;
+        int max = Arrays.stream(STRING_ARR)
+                .mapToInt(String::length)
+                .max()
+                .orElse(-1);
+        return max;
     }
 
     // 5.3 임의의 로또번호(1~45)를 정렬해서 출력하시오.
     public List<Integer> quiz3() {
-        return Collections.emptyList();
+        IntStream intStream = IntStream.rangeClosed(1, 45);
+        List<Integer> lotto = intStream.limit(6)
+                .boxed()
+                .collect(Collectors.toList());
+
+        return lotto;
     }
 
     // 5.4 두 개의 주사위를 굴려서 나온 눈의 합이 6인 경우를 모두 출력하시오.
     public List<Integer[]> quiz4() {
-        return Collections.emptyList();
+        //failed
+        Integer[] num1 = {1,2,3,4,5,6};
+        Integer[] num2 = {1,2,3,4,5,6};
+        Stream<Integer> dice1 = Arrays.stream(num1);
+        Stream<Integer> dice2 = Arrays.stream(num2);
+
+        List<Integer[]> result = dice1.flatMap(i -> dice2.map(j -> new Integer[]{i, j}))
+                .filter(t -> (t[0] + t[1]) == 6)
+                .collect(Collectors.toList());
+        System.out.println();
+        return result;
     }
 
 }
