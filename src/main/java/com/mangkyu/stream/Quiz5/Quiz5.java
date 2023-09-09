@@ -3,6 +3,7 @@ package com.mangkyu.stream.Quiz5;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -32,26 +33,26 @@ public class Quiz5 {
     // 5.3 임의의 로또번호(1~45)를 정렬해서 출력하시오.
     public List<Integer> quiz3() {
         IntStream intStream = IntStream.rangeClosed(1, 45);
-        List<Integer> lotto = intStream.limit(6)
-                .boxed()
-                .collect(Collectors.toList());
 
-        return lotto;
+        return new Random().ints(1,46)
+                .distinct()
+                .limit(6)
+                .boxed()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     // 5.4 두 개의 주사위를 굴려서 나온 눈의 합이 6인 경우를 모두 출력하시오.
     public List<Integer[]> quiz4() {
-        //failed
-        Integer[] num1 = {1,2,3,4,5,6};
-        Integer[] num2 = {1,2,3,4,5,6};
-        Stream<Integer> dice1 = Arrays.stream(num1);
-        Stream<Integer> dice2 = Arrays.stream(num2);
 
-        List<Integer[]> result = dice1.flatMap(i -> dice2.map(j -> new Integer[]{i, j}))
-                .filter(t -> (t[0] + t[1]) == 6)
+        Integer[] dice = {1,2,3,4,5,6};
+
+        return Arrays.stream(dice).flatMap(i -> Arrays.stream(dice)
+                        .map(j -> new Integer[]{i, j}))
+                        .filter(t -> (t[0] + t[1]) == 6)
                 .collect(Collectors.toList());
-        System.out.println();
-        return result;
+
+
     }
 
 }
